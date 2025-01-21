@@ -1,4 +1,5 @@
 import random
+import streamlit as st
 
 class LootBox:
     def __init__(self):
@@ -69,25 +70,35 @@ class LootBox:
         print("\nCollection Progress:")
         print(f"Boxes Opened: {self.boxes_opened}")
         print(f"Average Currency per Box: {self.total_currency / self.boxes_opened:.2f}" if self.boxes_opened > 0 else "No boxes opened yet")
-        
+        st.text("\nCollection Progress:")
+        st.text(f"Boxes Opened: {self.boxes_opened}")
+        st.text(f"Average Currency per Box: {self.total_currency / self.boxes_opened:.2f}" if self.boxes_opened > 0 else "No boxes opened yet")
+
+
+
         # Display unique items progress
         for item_type in sorted(self.unique_items.keys()):
             collected = len(self.unique_items[item_type]["collected"])
             total = self.unique_items[item_type]["total"]
             progress = (collected / total * 100)
             print(f"- {item_type}: {collected}/{total} ({progress:.1f}%)")
+            st.text(f"- {item_type}: {collected}/{total} ({progress:.1f}%)")
         
         # Display currency
         print(f"- Currency obtained: {self.item_config['Currency']['collected']} times")
         print(f"Total Currency: {self.total_currency}")
+        st.text(f"- Currency obtained: {self.item_config['Currency']['collected']} times")
+        st.text(f"Total Currency: {self.total_currency}")
 
     def display_drop_rates(self):
         print("\nDrop Rates:")
         for item, config in self.item_config.items():
             if item in self.unique_items:
                 print(f"- {item}: {config['drop_rate']}% (Unique Items: {self.unique_items[item]['total']})")
+                st.text(f"- {item}: {config['drop_rate']}% (Unique Items: {self.unique_items[item]['total']})")
             else:
                 print(f"- {item}: {config['drop_rate']}% (Unlimited)")
+                st.text(f"- {item}: {config['drop_rate']}% (Unlimited)")
 
 def main():
     loot_box = LootBox()
@@ -100,6 +111,7 @@ def main():
         print("\nYou received:")
         for reward in rewards:
             print(f"- {reward}")
+            st.text(f"- {reward}")
             
         loot_box.display_inventory()
 
