@@ -116,6 +116,11 @@ def main():
         for reward in rewards:
             st.write(f"- {reward}")
 
+   # Button to reset inventory
+    if st.button("Reset Inventory"):
+        st.session_state.loot_box = LootBox()  # Reset the loot box instance
+        st.write("### Inventory Reset!")
+
     st.write("### Inventory Update:")
     loot_box.display_inventory()
 
