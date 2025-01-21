@@ -101,18 +101,23 @@ class LootBox:
                 st.text(f"- {item}: {config['drop_rate']}% (Unlimited)")
 
 def main():
-    loot_box = LootBox()
+    if "loot_box" not in st.session_state:
+        st.session_state.loot_box = LootBox()
+
+    loot_box = st.session_state.loot_box
+
+    st.title("Loot Box Simulator")
     loot_box.display_drop_rates()
 
-    if st.button("Open a loot box"):
+    if st.button("Open a Loot Box"):
         rewards = loot_box.open_box()
-        
-        st.write("\nYou received:")
+
+        st.write("### You received:")
         for reward in rewards:
             st.write(f"- {reward}")
-            
-        loot_box.display_inventory()
+
+    st.write("### Inventory Update:")
+    loot_box.display_inventory()
 
 if __name__ == "__main__":
-    st.title("Loot Box Simulator")
     main()
