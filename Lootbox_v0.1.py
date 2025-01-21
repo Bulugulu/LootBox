@@ -103,17 +103,16 @@ class LootBox:
 def main():
     loot_box = LootBox()
     loot_box.display_drop_rates()
-    
-    while True:
-        input("\nPress Enter to open a loot box (or Ctrl+C to exit)")
+
+    if st.button("Open a loot box"):
         rewards = loot_box.open_box()
         
-        print("\nYou received:")
+        st.write("\nYou received:")
         for reward in rewards:
-            print(f"- {reward}")
-            st.text(f"- {reward}")
+            st.write(f"- {reward}")
             
         loot_box.display_inventory()
 
 if __name__ == "__main__":
+    st.title("Loot Box Simulator")
     main()
