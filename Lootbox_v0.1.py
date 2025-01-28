@@ -15,11 +15,11 @@ class LootBox:
         
         # Drop rates configuration
         self.item_config = {
-            "Emotes": {"drop_rate": 40.0},
+            "Emotes": {"drop_rate": 15.0},
             "Currency": {"drop_rate": 20.0, "max_count": float('inf'), "collected": 0},
-            "Spawn Plat.": {"drop_rate": 10.0},
-            "Pets": {"drop_rate": 15.0},
-            "Chess Set: T1": {"drop_rate": 10.0},
+            "Spawn Plat.": {"drop_rate": 5.0},
+            "Pets": {"drop_rate": 40.0},
+            "Chess Set: T1": {"drop_rate": 15.0},
             "Chess Set: T2": {"drop_rate": 4.0},
             "Chess Set: T3": {"drop_rate": 1.0}
         }
