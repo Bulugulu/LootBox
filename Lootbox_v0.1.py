@@ -5,12 +5,12 @@ class LootBox:
     def __init__(self):
         # Define total unique items for each category
         self.unique_items = {
-            "Emotes": {"total": 80, "collected": set()},
-            "Spawn Plat.": {"total": 20, "collected": set()},
-            "Pets": {"total": 50, "collected": set()},
+            "Emotes": {"total": 40, "collected": set()},
+            "Spawn Plat.": {"total": 16, "collected": set()},
+            "Pets": {"total": 80, "collected": set()},
             "Chess Set: T1": {"total": 105, "collected": set()},
             "Chess Set: T2": {"total": 60, "collected": set()},
-            "Chess Set: T3": {"total": 54, "collected": set()}
+            "Chess Set: T3": {"total": 8, "collected": set()}
         }
         
         # Drop rates configuration
