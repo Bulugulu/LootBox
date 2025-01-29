@@ -40,7 +40,7 @@ class LootBox:
         rewards = []
         self.boxes_opened += 1
         
-        for _ in range(1):
+        for _ in range(2):
             items = list(self.item_config.keys())
             probabilities = [self.item_config[item]["drop_rate"] / 100 for item in items]
             
