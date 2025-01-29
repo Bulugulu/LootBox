@@ -21,7 +21,7 @@ class LootBox:
             "Pets": {"drop_rate": 40.0},
             "Chess Set: T1": {"drop_rate": 25.0},
             "Chess Set: T2": {"drop_rate": 4.5},
-            "Chess Set: T3": {"drop_rate": 1.0}
+            "Chess Set: T3": {"drop_rate": 0.5}
         }
         
         total_rate = sum(item["drop_rate"] for item in self.item_config.values())
