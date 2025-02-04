@@ -8,7 +8,7 @@ class LootBox:
             "Emotes": {"total": 20, "collected": set()},
             "Spawn Plat.": {"total": 8, "collected": set()},
             "Pets": {"total": 80, "collected": set()},
-            "Chess Set: T1": {"total": 105, "collected": set()},
+            "Chess Set: T1": {"total": 112, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
             "Chess Set: T3": {"total": 2, "collected": set()}
         }
@@ -40,7 +40,7 @@ class LootBox:
         rewards = []
         self.boxes_opened += 1
         
-        for _ in range(2):
+        for _ in range(1):
             items = list(self.item_config.keys())
             probabilities = [self.item_config[item]["drop_rate"] / 100 for item in items]
             
