@@ -29,6 +29,9 @@ class LootBox:
         self.currency_for_duplicate = 100
         self.total_currency = 0
         self.boxes_opened = 0
+        
+        # Add duplicate counter
+        self.total_duplicates = 0
 
     def get_random_item_number(self, item_type):
         """Get a random number for a specific item type"""
@@ -54,6 +57,7 @@ class LootBox:
                 item_number = self.get_random_item_number(item)
                 if item_number in self.unique_items[item]["collected"]:
                     # Duplicate item
+                    self.total_duplicates += 1  # Increment duplicate counter
                     self.total_currency += self.currency_for_duplicate
                     rewards.append(f"{item} #{item_number} (Duplicate: +{self.currency_for_duplicate} currency)")
                 else:
@@ -67,10 +71,21 @@ class LootBox:
     def display_inventory(self):
         print("\nCollection Progress:")
         print(f"Boxes Opened: {self.boxes_opened}")
-        print(f"Average Currency per Box: {self.total_currency / self.boxes_opened:.2f}" if self.boxes_opened > 0 else "No boxes opened yet")
         st.text("\nCollection Progress:")
         st.text(f"Boxes Opened: {self.boxes_opened}")
-        st.text(f"Average Currency per Box: {self.total_currency / self.boxes_opened:.2f}" if self.boxes_opened > 0 else "No boxes opened yet")
+
+        if self.boxes_opened > 0:
+            avg_currency = self.total_currency / self.boxes_opened
+            print(f"Average Currency per Box: {avg_currency:.2f}")
+            st.text(f"Average Currency per Box: {avg_currency:.2f}")
+        else:
+            print("No boxes opened yet")
+            st.text("No boxes opened yet")
+
+        # Add duplicate items count
+        print(f"Total Duplicate Items: {self.total_duplicates}")
+        st.text(f"Total Duplicate Items: {self.total_duplicates}")
+        st.text("")
 
         # Display unique items progress
         for item_type in sorted(self.unique_items.keys()):
