@@ -5,23 +5,23 @@ class LootBox:
     def __init__(self):
         # Define total unique items for each category
         self.unique_items = {
-            "Emotes": {"total": 20, "collected": set()},
+            "Emotes": {"total": 28, "collected": set()},
             "Spawn Plat.": {"total": 8, "collected": set()},
-            "Pets": {"total": 80, "collected": set()},
+            "Pets": {"total": 88, "collected": set()},
             "Chess Set: T1": {"total": 112, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
-            "Chess Set: T3": {"total": 2, "collected": set()}
+            "Chess Set: T3": {"total": 0, "collected": set()}
         }
         
         # Drop rates configuration
         self.item_config = {
             "Emotes": {"drop_rate": 15.0},
-            "Currency": {"drop_rate": 10.0, "max_count": float('inf'), "collected": 0},
+            "Currency": {"drop_rate": 30.0, "max_count": float('inf'), "collected": 0},
             "Spawn Plat.": {"drop_rate": 5.0},
-            "Pets": {"drop_rate": 40.0},
-            "Chess Set: T1": {"drop_rate": 25.0},
-            "Chess Set: T2": {"drop_rate": 4.5},
-            "Chess Set: T3": {"drop_rate": 0.5}
+            "Pets": {"drop_rate": 25.0},
+            "Chess Set: T1": {"drop_rate": 20.0},
+            "Chess Set: T2": {"drop_rate": 5.0},
+            "Chess Set: T3": {"drop_rate": 0}
         }
         
         total_rate = sum(item["drop_rate"] for item in self.item_config.values())
@@ -40,7 +40,7 @@ class LootBox:
         rewards = []
         self.boxes_opened += 1
         
-        for _ in range(1):
+        for _ in range(3):
             items = list(self.item_config.keys())
             probabilities = [self.item_config[item]["drop_rate"] / 100 for item in items]
             
