@@ -72,13 +72,11 @@ class LootBox:
         st.text(f"Boxes Opened: {self.boxes_opened}")
         st.text(f"Average Currency per Box: {self.total_currency / self.boxes_opened:.2f}" if self.boxes_opened > 0 else "No boxes opened yet")
 
-
-
         # Display unique items progress
         for item_type in sorted(self.unique_items.keys()):
             collected = len(self.unique_items[item_type]["collected"])
             total = self.unique_items[item_type]["total"]
-            progress = (collected / total * 100)
+            progress = (collected / total * 100) if total > 0 else 0
             print(f"- {item_type}: {collected}/{total} ({progress:.1f}%)")
             st.text(f"- {item_type}: {collected}/{total} ({progress:.1f}%)")
         
