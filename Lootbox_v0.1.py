@@ -117,23 +117,85 @@ def main():
 
     loot_box = st.session_state.loot_box
 
-    st.title("Loot Box Simulator")
-    loot_box.display_drop_rates()
+    st.title("🎁 Loot Box Simulator")
+    
+    # Create columns for layout
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.subheader("📊 Drop Rates")
+        # Create a more visually appealing drop rates display
+        for item, config in loot_box.item_config.items():
+            if item in loot_box.unique_items:
+                st.progress(config['drop_rate'] / 100)
+                st.caption(f"{item}: {config['drop_rate']}% (Unique Items: {loot_box.unique_items[item]['total']})")
+            else:
+                st.progress(config['drop_rate'] / 100)
+                st.caption(f"{item}: {config['drop_rate']}% (Unlimited)")
+    
+    with col2:
+        st.subheader("🎮 Controls")
+        # Add some spacing
+        st.write("")
+        
+        # Make the open box button more prominent
+        if st.button("🎁 Open a Loot Box", use_container_width=True):
+            rewards = loot_box.open_box()
+            st.session_state.last_rewards = rewards
 
-    if st.button("Open a Loot Box"):
-        rewards = loot_box.open_box()
+        # Add some spacing
+        st.write("")
+        
+        # Make the reset button less prominent
+        if st.button("🔄 Reset Inventory", use_container_width=True, type="secondary"):
+            st.session_state.loot_box = LootBox()
+            st.session_state.last_rewards = None
+            st.rerun()
 
-        st.write("### You received:")
-        for reward in rewards:
-            st.write(f"- {reward}")
+    # Display rewards in an expander if they exist
+    if hasattr(st.session_state, 'last_rewards') and st.session_state.last_rewards:
+        with st.expander("🎉 Latest Rewards", expanded=True):
+            for reward in st.session_state.last_rewards:
+                if "Duplicate" in reward:
+                    st.warning(reward)
+                elif "New" in reward:
+                    st.success(reward)
+                else:
+                    st.info(reward)
 
-   # Button to reset inventory
-    if st.button("Reset Inventory"):
-        st.session_state.loot_box = LootBox()  # Reset the loot box instance
-        st.write("### Inventory Reset!")
+    # Display inventory in a nice format
+    st.divider()
+    st.subheader("📦 Inventory Status")
+    
+    # Create columns for stats
+    stat_col1, stat_col2, stat_col3 = st.columns(3)
+    
+    with stat_col1:
+        st.metric("Boxes Opened", loot_box.boxes_opened)
+    
+    with stat_col2:
+        avg_currency = loot_box.total_currency / loot_box.boxes_opened if loot_box.boxes_opened > 0 else 0
+        st.metric("Avg. Currency per Box", f"{avg_currency:.1f}")
+    
+    with stat_col3:
+        st.metric("Total Duplicates", loot_box.total_duplicates)
 
-    st.write("### Inventory Update:")
-    loot_box.display_inventory()
+    # Create a progress bar for each collection category
+    st.subheader("🏆 Collection Progress")
+    for item_type in sorted(loot_box.unique_items.keys()):
+        collected = len(loot_box.unique_items[item_type]["collected"])
+        total = loot_box.unique_items[item_type]["total"]
+        progress = (collected / total) if total > 0 else 0
+        st.progress(progress)
+        st.caption(f"{item_type}: {collected}/{total} ({progress*100:.1f}%)")
+
+    # Currency section
+    st.subheader("💰 Currency Status")
+    curr_col1, curr_col2 = st.columns(2)
+    with curr_col1:
+        st.metric("Total Currency", loot_box.total_currency)
+    with curr_col2:
+        st.metric("Currency Drops", loot_box.item_config['Currency']['collected'])
 
 if __name__ == "__main__":
     main()
