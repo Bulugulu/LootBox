@@ -119,25 +119,11 @@ def main():
 
     st.title("🎁 Loot Box Simulator")
     
-    # Create columns for layout
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.subheader("📊 Drop Rates")
-        # Create a more visually appealing drop rates display
-        for item, config in loot_box.item_config.items():
-            if item in loot_box.unique_items:
-                st.progress(config['drop_rate'] / 100)
-                st.caption(f"{item}: {config['drop_rate']}% (Unique Items: {loot_box.unique_items[item]['total']})")
-            else:
-                st.progress(config['drop_rate'] / 100)
-                st.caption(f"{item}: {config['drop_rate']}% (Unlimited)")
+    # Controls section
+    st.subheader("🎮 Controls")
+    col1, col2, col3 = st.columns([1, 1, 1])
     
     with col2:
-        st.subheader("🎮 Controls")
-        # Add some spacing
-        st.write("")
-        
         # Make the open box button more prominent
         if st.button("🎁 Open a Loot Box", use_container_width=True):
             rewards = loot_box.open_box()
@@ -196,6 +182,18 @@ def main():
         st.metric("Total Currency", loot_box.total_currency)
     with curr_col2:
         st.metric("Currency Drops", loot_box.item_config['Currency']['collected'])
+
+    # Drop rates section moved to the bottom
+    st.divider()
+    st.subheader("📊 Drop Rates")
+    # Create a more visually appealing drop rates display
+    for item, config in loot_box.item_config.items():
+        if item in loot_box.unique_items:
+            st.progress(config['drop_rate'] / 100)
+            st.caption(f"{item}: {config['drop_rate']}% (Unique Items: {loot_box.unique_items[item]['total']})")
+        else:
+            st.progress(config['drop_rate'] / 100)
+            st.caption(f"{item}: {config['drop_rate']}% (Unlimited)")
 
 if __name__ == "__main__":
     main()
