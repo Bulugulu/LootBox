@@ -10,7 +10,6 @@ class LootBox:
             "Pets": {"total": 88, "collected": set()},
             "Chess Set: T1": {"total": 112, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
-            "Chess Set: T3": {"total": 0, "collected": set()}
         }
         
         # Drop rates configuration
@@ -21,7 +20,6 @@ class LootBox:
             "Pets": {"drop_rate": 25.0},
             "Chess Set: T1": {"drop_rate": 20.0},
             "Chess Set: T2": {"drop_rate": 5.0},
-            "Chess Set: T3": {"drop_rate": 0}
         }
         
         total_rate = sum(item["drop_rate"] for item in self.item_config.values())
