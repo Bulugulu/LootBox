@@ -4,34 +4,89 @@ from lootbox_model import LootBox
 def display_controls():
     """Display the control buttons for the lootbox simulator"""
     st.subheader("🎮 Controls")
+    
+    # Create a 3-column layout for controls
     col1, col2, col3 = st.columns([1, 1, 1])
     
+    with col1:
+        # Add number input for batch opening
+        num_boxes = st.number_input(
+            "Number of boxes to open:",
+            min_value=1,
+            max_value=1000,
+            value=1,
+            step=1,
+            help="Enter the number of loot boxes you want to open at once"
+        )
+    
     with col2:
-        # Make the open box button more prominent
-        if st.button("🎁 Open a Loot Box", use_container_width=True):
-            rewards = st.session_state.loot_box.open_box()
-            st.session_state.last_rewards = rewards
+        # Open box button
+        if st.button("🎁 Open Loot Box(es)", use_container_width=True):
+            # Clear previous rewards if any
+            st.session_state.last_rewards = []
+            
+            # Open the specified number of boxes
+            progress_bar = st.progress(0)
+            for i in range(num_boxes):
+                rewards = st.session_state.loot_box.open_box()
+                
+                # Store only the last 10 rewards to avoid UI clutter
+                if i >= num_boxes - 10:
+                    st.session_state.last_rewards.extend(rewards)
+                
+                # Update progress bar
+                progress_bar.progress((i + 1) / num_boxes)
+            
+            # Add a summary message
+            if num_boxes > 1:
+                summary = f"Opened {num_boxes} loot boxes! Showing the last {min(10, num_boxes)} boxes' rewards."
+                st.session_state.summary_message = summary
 
-        # Add some spacing
-        st.write("")
-        
-        # Make the reset button less prominent
+    with col3:
+        # Reset button
         if st.button("🔄 Reset Inventory", use_container_width=True, type="secondary"):
             st.session_state.loot_box = LootBox()
             st.session_state.last_rewards = None
+            st.session_state.summary_message = None
             st.rerun()
 
 def display_rewards():
     """Display the latest rewards if they exist"""
+    if hasattr(st.session_state, 'summary_message') and st.session_state.summary_message:
+        st.info(st.session_state.summary_message)
+        
     if hasattr(st.session_state, 'last_rewards') and st.session_state.last_rewards:
         with st.expander("🎉 Latest Rewards", expanded=True):
+            # Group rewards by type for better organization
+            duplicates = []
+            new_items = []
+            currency = []
+            
             for reward in st.session_state.last_rewards:
                 if "Duplicate" in reward:
-                    st.warning(reward)
+                    duplicates.append(reward)
                 elif "New" in reward:
-                    st.success(reward)
+                    new_items.append(reward)
                 else:
-                    st.info(reward)
+                    currency.append(reward)
+            
+            # Display new items first (they're most exciting)
+            if new_items:
+                st.markdown("### 🆕 New Items")
+                for item in new_items:
+                    st.success(item)
+            
+            # Display duplicates
+            if duplicates:
+                st.markdown("### 🔄 Duplicates")
+                for item in duplicates:
+                    st.warning(item)
+            
+            # Display currency
+            if currency:
+                st.markdown("### 💰 Currency")
+                for item in currency:
+                    st.info(item)
 
 def display_inventory_stats(loot_box):
     """Display inventory statistics"""

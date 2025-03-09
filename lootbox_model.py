@@ -105,3 +105,31 @@ class LootBox:
             }
             
         return stats 
+
+    def open_multiple_boxes(self, count):
+        """Open multiple boxes and return summary statistics"""
+        all_rewards = []
+        initial_currency = self.total_currency
+        initial_duplicates = self.total_duplicates
+        initial_collected = {
+            item_type: len(self.unique_items[item_type]["collected"]) 
+            for item_type in self.unique_items
+        }
+        
+        for _ in range(count):
+            rewards = self.open_box()
+            all_rewards.extend(rewards)
+        
+        # Generate summary statistics
+        summary = {
+            "boxes_opened": count,
+            "currency_gained": self.total_currency - initial_currency,
+            "new_duplicates": self.total_duplicates - initial_duplicates,
+            "new_items": {
+                item_type: len(self.unique_items[item_type]["collected"]) - initial_collected[item_type]
+                for item_type in self.unique_items
+            },
+            "avg_currency_per_box": (self.total_currency - initial_currency) / count if count > 0 else 0
+        }
+        
+        return all_rewards, summary 
