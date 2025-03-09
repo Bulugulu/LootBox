@@ -5,28 +5,37 @@ class LootBox:
     def __init__(self):
         # Define total unique items for each category
         self.unique_items = {
-            "Emotes": {"total": 28, "collected": set()},
-            "Spawn Plat.": {"total": 8, "collected": set()},
-            "Pets": {"total": 88, "collected": set()},
+            "Emote T1": {"total": 20, "collected": set()},
+            "Emote T2": {"total": 8, "collected": set()},
+            "Spawn Plat T1": {"total": 8, "collected": set()},
+            "Spawn Plat T2": {"total": 0, "collected": set()},
+            "Pets T1": {"total": 56, "collected": set()},
+            "Pets T2": {"total": 32, "collected": set()},
             "Chess Set: T1": {"total": 112, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
+            "Chess Set: T3": {"total": 0, "collected": set()},
         }
         
         # Drop rates configuration
         self.item_config = {
-            "Emotes": {"drop_rate": 15.0},
-            "Currency": {"drop_rate": 30.0, "max_count": float('inf'), "collected": 0},
-            "Spawn Plat.": {"drop_rate": 5.0},
-            "Pets": {"drop_rate": 25.0},
-            "Chess Set: T1": {"drop_rate": 20.0},
-            "Chess Set: T2": {"drop_rate": 5.0},
+            "Currency High": {"drop_rate": 5.0, "max_count": float('inf'), "collected": 0, "value": 100},
+            "Currency Med": {"drop_rate": 8.0, "max_count": float('inf'), "collected": 0, "value": 50},
+            "Currency Low": {"drop_rate": 18.0, "max_count": float('inf'), "collected": 0, "value": 20},
+            "Emote T1": {"drop_rate": 10.0, "duplicate_currency": 5},
+            "Emote T2": {"drop_rate": 5.0, "duplicate_currency": 10},
+            "Spawn Plat T1": {"drop_rate": 5.0, "duplicate_currency": 10},
+            "Spawn Plat T2": {"drop_rate": 0.0, "duplicate_currency": 0},
+            "Pets T1": {"drop_rate": 20.0, "duplicate_currency": 5},
+            "Pets T2": {"drop_rate": 5.0, "duplicate_currency": 10},
+            "Chess Set: T1": {"drop_rate": 20.0, "duplicate_currency": 20},
+            "Chess Set: T2": {"drop_rate": 4.0, "duplicate_currency": 50},
+            "Chess Set: T3": {"drop_rate": 0.0, "duplicate_currency": 0},
         }
         
         total_rate = sum(item["drop_rate"] for item in self.item_config.values())
         if abs(total_rate - 100.0) > 0.01:
             raise ValueError(f"Drop rates must sum to 100% (current sum: {total_rate}%)")
             
-        self.currency_for_duplicate = 100
         self.total_currency = 0
         self.boxes_opened = 0
         
@@ -47,24 +56,29 @@ class LootBox:
             
             item = random.choices(items, weights=probabilities, k=1)[0]
             
-            if item == "Currency":
-                currency_amount = random.randint(50, 200)
+            if "Currency" in item:
+                currency_amount = self.item_config[item]["value"]
                 self.total_currency += currency_amount
-                rewards.append(f"Currency: {currency_amount}")
+                rewards.append(f"{item}: {currency_amount}")
                 self.item_config[item]["collected"] += 1
             else:
                 # Handle unique items (Emotes, Spawn Platforms, Pets, Chess Sets)
-                item_number = self.get_random_item_number(item)
-                if item_number in self.unique_items[item]["collected"]:
-                    # Duplicate item
-                    self.total_duplicates += 1  # Increment duplicate counter
-                    self.total_currency += self.currency_for_duplicate
-                    rewards.append(f"{item} #{item_number} (Duplicate: +{self.currency_for_duplicate} currency)")
+                if self.unique_items[item]["total"] > 0:
+                    item_number = self.get_random_item_number(item)
+                    if item_number in self.unique_items[item]["collected"]:
+                        # Duplicate item
+                        self.total_duplicates += 1
+                        duplicate_currency = self.item_config[item]["duplicate_currency"]
+                        self.total_currency += duplicate_currency
+                        rewards.append(f"{item} #{item_number} (Duplicate: +{duplicate_currency} currency)")
+                    else:
+                        # New item
+                        self.unique_items[item]["collected"].add(item_number)
+                        rewards.append(f"New {item} #{item_number} "
+                                    f"({len(self.unique_items[item]['collected'])}/{self.unique_items[item]['total']})")
                 else:
-                    # New item
-                    self.unique_items[item]["collected"].add(item_number)
-                    rewards.append(f"New {item} #{item_number} "
-                                 f"({len(self.unique_items[item]['collected'])}/{self.unique_items[item]['total']})")
+                    # This should not happen with proper configuration, but just in case
+                    rewards.append(f"Error: {item} has no items to collect")
         
         return rewards
 
@@ -96,9 +110,13 @@ class LootBox:
             st.text(f"- {item_type}: {collected}/{total} ({progress:.1f}%)")
         
         # Display currency
-        print(f"- Currency obtained: {self.item_config['Currency']['collected']} times")
+        print(f"- Currency obtained: {self.item_config['Currency High']['collected']} times")
+        print(f"- Currency obtained: {self.item_config['Currency Med']['collected']} times")
+        print(f"- Currency obtained: {self.item_config['Currency Low']['collected']} times")
         print(f"Total Currency: {self.total_currency}")
-        st.text(f"- Currency obtained: {self.item_config['Currency']['collected']} times")
+        st.text(f"- Currency obtained: {self.item_config['Currency High']['collected']} times")
+        st.text(f"- Currency obtained: {self.item_config['Currency Med']['collected']} times")
+        st.text(f"- Currency obtained: {self.item_config['Currency Low']['collected']} times")
         st.text(f"Total Currency: {self.total_currency}")
 
     def display_drop_rates(self):
@@ -181,7 +199,9 @@ def main():
     with curr_col1:
         st.metric("Total Currency", loot_box.total_currency)
     with curr_col2:
-        st.metric("Currency Drops", loot_box.item_config['Currency']['collected'])
+        st.metric("Currency Drops", loot_box.item_config['Currency High']['collected'] +
+                  loot_box.item_config['Currency Med']['collected'] +
+                  loot_box.item_config['Currency Low']['collected'])
 
     # Drop rates section moved to the bottom
     st.divider()
