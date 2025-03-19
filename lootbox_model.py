@@ -87,9 +87,9 @@ class LootBox:
 
         # Define slot-specific loot tables (all using the same original probabilities for now)
         self.slot_loot_tables = [
-            original_loot_table.copy(),  # Slot 1
-            original_loot_table.copy(),  # Slot 2
-            original_loot_table.copy()   # Slot 3
+            slot1_loot_table.copy(),  # Slot 1
+            slot2_loot_table.copy(),  # Slot 2
+            slot3_loot_table.copy()   # Slot 3
         ]
         
         # Validate each slot's loot table adds up to 100%
