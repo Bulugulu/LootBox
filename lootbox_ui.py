@@ -133,11 +133,59 @@ def display_currency_status(loot_box):
 def display_drop_rates(loot_box):
     """Display drop rates with progress bars"""
     st.divider()
-    st.subheader("📊 Drop Rates")
+    st.subheader("📊 Drop Rates by Slot")
     
-    for item, config in loot_box.item_config.items():
-        st.progress(config['drop_rate'] / 100)
-        if item in loot_box.unique_items:
-            st.caption(f"{item}: {config['drop_rate']}% (Unique Items: {loot_box.unique_items[item]['total']})")
-        else:
-            st.caption(f"{item}: {config['drop_rate']}% (Unlimited)") 
+    slot_drop_rates = loot_box.get_slot_drop_rates()
+    
+    # Check if all slots have the same drop rates
+    all_same = all(slot_drop_rates[0] == slot for slot in slot_drop_rates[1:])
+    
+    if all_same:
+        # If all slots have the same drop rates, show a simplified view
+        st.info("All slots currently have the same drop rates.")
+        
+        # Sort items by drop rate (descending)
+        sorted_items = sorted(slot_drop_rates[0].items(), key=lambda x: x[1], reverse=True)
+        
+        for item, rate in sorted_items:
+            # Skip items with 0% drop rate
+            if rate == 0:
+                continue
+                
+            st.progress(rate / 100)
+            
+            if item in loot_box.unique_items:
+                total_items = loot_box.unique_items[item]["total"]
+                st.caption(f"{item}: {rate}% (Unique Items: {total_items})")
+            else:
+                # Currency items
+                value = loot_box.item_properties[item]["value"]
+                st.caption(f"{item}: {rate}% (Value: {value})")
+    else:
+        # Show separate drop rates for each slot
+        for slot_index, loot_table in enumerate(slot_drop_rates):
+            st.markdown(f"#### Slot {slot_index+1}")
+            
+            # Sort items by drop rate (descending)
+            sorted_items = sorted(loot_table.items(), key=lambda x: x[1], reverse=True)
+            
+            for item, rate in sorted_items:
+                # Skip items with 0% drop rate
+                if rate == 0:
+                    continue
+                    
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.progress(rate / 100)
+                with col2:
+                    st.write(f"{rate}%")
+                    
+                if item in loot_box.unique_items:
+                    total_items = loot_box.unique_items[item]["total"]
+                    st.caption(f"{item}: {rate}% (Unique Items: {total_items})")
+                else:
+                    # Currency items
+                    value = loot_box.item_properties[item]["value"]
+                    st.caption(f"{item}: {rate}% (Value: {value})")
+            
+            st.divider() 
