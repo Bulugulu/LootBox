@@ -12,7 +12,7 @@ class LootBox:
             "Pets T2": {"total": 32, "collected": set()},
             "Chess Set: T1": {"total": 112, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
-            "Chess Set: T3": {"total": 0, "collected": set()},
+            "Chess Set: T3": {"total": 48, "collected": set()},
         }
         
         # Configure item properties
