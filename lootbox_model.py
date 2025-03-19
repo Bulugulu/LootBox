@@ -47,6 +47,44 @@ class LootBox:
             "Chess Set: T3": 0.0,
         }
         
+                # Using original drop rates for all slots
+        slot1_loot_table = {
+            "Currency High": 5.0,
+            "Currency Med": 8.0,
+            "Currency Low": 18.0,
+            "Emote T1": 10.0,
+            "Emote T2": 5.0,
+            "Spawn Plat T1": 5.0,
+            "Spawn Plat T2": 0.0,
+            "Pets T1": 20.0,
+            "Pets T2": 5.0,
+            "Chess Set: T1": 20.0,
+            "Chess Set: T2": 4.0,
+            "Chess Set: T3": 0.0,
+        }
+
+        slot2_loot_table = {
+            "Currency High": 5.0,
+            "Currency Med": 8.0,
+            "Currency Low": 18.0,
+            "Emote T1": 10.0,
+            "Emote T2": 5.0,
+            "Spawn Plat T1": 5.0,
+            "Spawn Plat T2": 0.0,
+            "Pets T1": 20.0,
+            "Pets T2": 5.0,
+            "Chess Set: T1": 20.0,
+            "Chess Set: T2": 4.0,
+            "Chess Set: T3": 0.0,
+        }
+
+        slot3_loot_table = {
+            "Currency High": 10.0,
+            "Currency Med": 20.0,
+            "Currency Low": 70.0,
+        }
+
+
         # Define slot-specific loot tables (all using the same original probabilities for now)
         self.slot_loot_tables = [
             original_loot_table.copy(),  # Slot 1
