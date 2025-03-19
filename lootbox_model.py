@@ -49,33 +49,27 @@ class LootBox:
         
                 # Using original drop rates for all slots
         slot1_loot_table = {
-            "Currency High": 5.0,
-            "Currency Med": 8.0,
-            "Currency Low": 18.0,
-            "Emote T1": 10.0,
-            "Emote T2": 5.0,
-            "Spawn Plat T1": 5.0,
+            "Emote T1": 14.0,
+            "Emote T2": 7.0,
+            "Spawn Plat T1": 7.0,
             "Spawn Plat T2": 0.0,
-            "Pets T1": 20.0,
-            "Pets T2": 5.0,
-            "Chess Set: T1": 20.0,
-            "Chess Set: T2": 4.0,
-            "Chess Set: T3": 0.0,
+            "Pets T1": 30.0,
+            "Pets T2": 7.0,
+            "Chess Set: T1": 29.0,
+            "Chess Set: T2": 5.9,
+            "Chess Set: T3": 0.1,
         }
 
         slot2_loot_table = {
-            "Currency High": 5.0,
-            "Currency Med": 8.0,
-            "Currency Low": 18.0,
-            "Emote T1": 10.0,
-            "Emote T2": 5.0,
-            "Spawn Plat T1": 5.0,
+            "Emote T1": 14.0,
+            "Emote T2": 7.0,
+            "Spawn Plat T1": 7.0,
             "Spawn Plat T2": 0.0,
-            "Pets T1": 20.0,
-            "Pets T2": 5.0,
-            "Chess Set: T1": 20.0,
-            "Chess Set: T2": 4.0,
-            "Chess Set: T3": 0.0,
+            "Pets T1": 30.0,
+            "Pets T2": 7.0,
+            "Chess Set: T1": 29.0,
+            "Chess Set: T2": 5.9,
+            "Chess Set: T3": 0.1,
         }
 
         slot3_loot_table = {
