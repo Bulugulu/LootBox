@@ -4,15 +4,15 @@ class LootBox:
     def __init__(self):
         # Define total unique items for each category
         self.unique_items = {
-            "Emote T1": {"total": 20, "collected": set()},
-            "Emote T2": {"total": 8, "collected": set()},
-            "Spawn Plat T1": {"total": 8, "collected": set()},
+            "Emote T1": {"total": 23, "collected": set()},
+            "Emote T2": {"total": 10, "collected": set()},
+            "Spawn Plat T1": {"total": 9, "collected": set()},
             "Spawn Plat T2": {"total": 0, "collected": set()},
-            "Pets T1": {"total": 56, "collected": set()},
-            "Pets T2": {"total": 32, "collected": set()},
-            "Chess Set: T1": {"total": 112, "collected": set()},
+            "Pets T1": {"total": 57, "collected": set()},
+            "Pets T2": {"total": 34, "collected": set()},
+            "Chess Set: T1": {"total": 114, "collected": set()},
             "Chess Set: T2": {"total": 32, "collected": set()},
-            "Chess Set: T3": {"total": 48, "collected": set()},
+            "Chess Set: T3": {"total": 24, "collected": set()},
         }
         
         # Configure item properties
@@ -20,15 +20,15 @@ class LootBox:
             "Currency High": {"value": 100, "collected": 0},
             "Currency Med": {"value": 50, "collected": 0},
             "Currency Low": {"value": 20, "collected": 0},
-            "Emote T1": {"duplicate_currency": 5},
-            "Emote T2": {"duplicate_currency": 10},
-            "Spawn Plat T1": {"duplicate_currency": 10},
-            "Spawn Plat T2": {"duplicate_currency": 0},
-            "Pets T1": {"duplicate_currency": 5},
-            "Pets T2": {"duplicate_currency": 10},
+            "Emote T1": {"duplicate_currency": 20},
+            "Emote T2": {"duplicate_currency": 50},
+            "Spawn Plat T1": {"duplicate_currency": 20},
+            "Spawn Plat T2": {"duplicate_currency": 50},
+            "Pets T1": {"duplicate_currency": 20},
+            "Pets T2": {"duplicate_currency": 50},
             "Chess Set: T1": {"duplicate_currency": 20},
             "Chess Set: T2": {"duplicate_currency": 50},
-            "Chess Set: T3": {"duplicate_currency": 0},
+            "Chess Set: T3": {"duplicate_currency": 100},
         }
         
         # Using original drop rates for all slots
